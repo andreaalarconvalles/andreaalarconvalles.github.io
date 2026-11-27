@@ -246,7 +246,38 @@
     <!-- Project 2 -->
     <article class="project" aria-labelledby="p2">
       <div>
-        <h3 id="p2">SAP invoice processing and approvals</h3>
+        <h3 id="p2">Month-end controls dashboard</h3>
+        <p class="where">Mercedes-Benz Financial Services<br><span class="status">In production</span></p>
+        <p class="impact"><b>40 hours</b><span>saved every month, 1 hour per entity</span></p>
+        <ul class="stack" aria-label="Tools">
+          <li>Power BI</li><li>Power Query</li><li>Excel</li>
+        </ul>
+      </div>
+      <div>
+        <figure class="vid"><video src="pbi.mp4" poster="pbi.jpg" controls playsinline preload="none" aria-label="Month-end checks: the problem and the solution, in 50 seconds"></video></figure>
+        <p class="problem">Four validation checks had to be run by hand for 40 entities every month, under deadline pressure.</p>
+        <ol class="flow" aria-label="Flow: controls dashboard">
+          <li><span class="node"><span class="sys">Folders</span><span class="act">Monthly reports, 40 entities</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node"><span class="sys">Power Query</span><span class="act">Combine and tag by entity</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node"><span class="sys">Power BI</span><span class="act">Run 4 checks</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node person"><span class="sys">Dashboard</span><span class="act">Review exceptions by entity</span></span></li>
+        </ol>
+        <p class="legend"><i></i>a person decides <i class="ai"></i>AI drafts, a person reviews</p>
+        <ol class="steps">
+          <li>Reports from every entity are combined automatically on one dashboard.</li>
+          <li>The four checks run for every entity at once. If something is off, the dashboard shows it.</li>
+          <li>A filter for every entity lets you review the exceptions one by one.</li>
+        </ol>
+      </div>
+    </article>
+
+    <!-- Project 3 -->
+    <article class="project" aria-labelledby="p3">
+      <div>
+        <h3 id="p3">SAP invoice processing and approvals</h3>
         <p class="where">Mercedes-Benz Financial Services<br><span class="status">In production</span></p>
         <p class="impact"><b>16 hours</b><span>saved every month</span></p>
         <ul class="stack" aria-label="Tools">
@@ -273,37 +304,6 @@
           <li>Filters are applied to the downloaded Excel file, following the team's business rules.</li>
           <li>If an invoice was already sent, the flow detects it and sends a follow-up instead of a new email.</li>
           <li>Status tracking shows which invoices are pending, chased or confirmed.</li>
-        </ol>
-      </div>
-    </article>
-
-    <!-- Project 3 -->
-    <article class="project" aria-labelledby="p3">
-      <div>
-        <h3 id="p3">Month-end controls dashboard</h3>
-        <p class="where">Mercedes-Benz Financial Services<br><span class="status">In production</span></p>
-        <p class="impact"><b>40 hours</b><span>saved every month, 1 hour per entity</span></p>
-        <ul class="stack" aria-label="Tools">
-          <li>Power BI</li><li>Power Query</li><li>Excel</li>
-        </ul>
-      </div>
-      <div>
-        <figure class="vid"><video src="pbi.mp4" poster="pbi.jpg" controls playsinline preload="none" aria-label="Month-end checks: the problem and the solution, in 50 seconds"></video></figure>
-        <p class="problem">Four validation checks had to be run by hand for 40 entities every month, under deadline pressure.</p>
-        <ol class="flow" aria-label="Flow: controls dashboard">
-          <li><span class="node"><span class="sys">Folders</span><span class="act">Monthly reports, 40 entities</span></span></li>
-          <li><span class="wire"><span class="doc"></span></span></li>
-          <li><span class="node"><span class="sys">Power Query</span><span class="act">Combine and tag by entity</span></span></li>
-          <li><span class="wire"><span class="doc"></span></span></li>
-          <li><span class="node"><span class="sys">Power BI</span><span class="act">Run 4 checks</span></span></li>
-          <li><span class="wire"><span class="doc"></span></span></li>
-          <li><span class="node person"><span class="sys">Dashboard</span><span class="act">Review exceptions by entity</span></span></li>
-        </ol>
-        <p class="legend"><i></i>a person decides <i class="ai"></i>AI drafts, a person reviews</p>
-        <ol class="steps">
-          <li>Reports from every entity are combined automatically on one dashboard.</li>
-          <li>The four checks run for every entity at once. If something is off, the dashboard shows it.</li>
-          <li>A filter for every entity lets you review the exceptions one by one.</li>
         </ol>
       </div>
     </article>

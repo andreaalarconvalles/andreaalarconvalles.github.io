@@ -45,9 +45,15 @@
   .topbar { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.86); backdrop-filter: saturate(160%) blur(10px);
             -webkit-backdrop-filter: saturate(160%) blur(10px); border-bottom: 1px solid var(--line); }
   .top { display: flex; justify-content: space-between; align-items: center; height: 64px; font-size: .95rem; }
-  .top strong { font-weight: 600; letter-spacing: -.01em; }
+  .top strong { font-weight: 600; letter-spacing: -.01em; white-space: nowrap; }
   .top nav a { margin-left: 28px; color: var(--muted); text-decoration: none; }
   .top nav a:hover { color: var(--ink); }
+  .top nav { display: flex; align-items: center; }
+  .lang { display: inline-flex; margin-left: 28px; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+  .lang button { font: 500 .8rem var(--sans); letter-spacing: .02em; border: 0; background: transparent; color: var(--muted); padding: 5px 10px; border-radius: 999px; cursor: pointer; }
+  .lang button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+  .lang button:hover { color: var(--ink); }
+  .lang button[aria-pressed="true"]:hover { color: #fff; }
 
   /* ---------- hero ---------- */
   .hero { padding: 128px 0 120px; max-width: 860px; }
@@ -135,7 +141,8 @@
   }
   @media (max-width: 640px) {
     .wrap { padding: 0 20px; }
-    .top nav a { margin-left: 18px; }
+    .top nav a { margin-left: 16px; }
+    .lang { margin-left: 14px; }
     .hero { padding: 56px 0 64px; }
     .actions { margin-bottom: 44px; }
     .project { padding: 56px 0 64px; }
@@ -145,6 +152,7 @@
     .doc { left: -5px; top: 0; }
     .node { min-width: 0; }
   }
+  @media (max-width: 480px) { .top nav a { display: none; } }
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   }
@@ -158,6 +166,7 @@
     <nav aria-label="Main">
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
+      <span class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="es" aria-pressed="false">ES</button></span>
     </nav>
   </div>
 </div></header>
@@ -218,7 +227,7 @@
         </ul>
       </div>
       <div>
-        <figure class="vid"><video src="ilg.mp4?v=3" poster="ilg.jpg?v=3" controls playsinline preload="none" aria-label="Monthly risk letters: the problem and the solution, in 1 minute"></video></figure>
+        <figure class="vid"><video data-v="ilg" src="ilg.mp4?v=3" poster="ilg.jpg?v=3" controls playsinline preload="none" aria-label="Monthly risk letters: the problem and the solution, in 1 minute"></video></figure>
         <p class="problem">Every month the team prepares a risk letter for each of the 40 companies in the group. Analysts opened dozens of spreadsheets, cross-checked numbers between files and wrote each letter with the results: 8 people, 2 weeks a month, working towards a deadline.</p>
         <ol class="flow" aria-label="Flow: risk letters">
           <li><span class="node"><span class="sys">Excel</span><span class="act">Read every file</span></span></li>
@@ -255,7 +264,7 @@
         </ul>
       </div>
       <div>
-        <figure class="vid"><video src="pbi.mp4?v=3" poster="pbi.jpg?v=3" controls playsinline preload="none" aria-label="Month-end checks: the problem and the solution, in 50 seconds"></video></figure>
+        <figure class="vid"><video data-v="pbi" src="pbi.mp4?v=3" poster="pbi.jpg?v=3" controls playsinline preload="none" aria-label="Month-end checks: the problem and the solution, in 1 minute"></video></figure>
         <p class="problem">Four validation checks had to be run by hand for 40 entities every month, under deadline pressure.</p>
         <ol class="flow" aria-label="Flow: controls dashboard">
           <li><span class="node"><span class="sys">Folders</span><span class="act">Monthly reports, 40 entities</span></span></li>
@@ -286,7 +295,7 @@
         </ul>
       </div>
       <div>
-        <figure class="vid"><video src="sap.mp4?v=3" poster="sap.jpg?v=3" controls playsinline preload="none" aria-label="Invoice follow-up: the problem and the solution, in 1 minute"></video></figure>
+        <figure class="vid"><video data-v="sap" src="sap.mp4?v=3" poster="sap.jpg?v=3" controls playsinline preload="none" aria-label="Invoice follow-up: the problem and the solution, in 1 minute"></video></figure>
         <p class="problem">Every week, open invoices had to be exported from SAP, sorted by hand, compared with last week's list and chased with individual emails to each person responsible.</p>
         <ol class="flow" aria-label="Flow: SAP invoices">
           <li><span class="node"><span class="sys">SAP GUI</span><span class="act">Export weekly invoice report</span></span></li>
@@ -365,6 +374,40 @@
     }), { threshold: 0.4 });
     flows.forEach(f => io.observe(f));
   }
+})();
+
+/* ---------- language: EN / ES ---------- */
+(() => {
+  const ES = {"Projects": "Proyectos", "Contact": "Contacto", "I'm a financial analyst who helps teams automate their tasks and win back crucial time at month‑end.": "Soy analista financiera y ayudo a los equipos a automatizar sus tareas y recuperar tiempo clave en el cierre de mes.", "I turn repetitive manual tasks into workflows that run on their own. When something doesn't match, AI steps in to suggest a solution, and a person reviews and approves it when needed.": "Convierto tareas manuales y repetitivas en flujos que funcionan solos. Cuando algo no cuadra, la IA propone una solución y una persona la revisa y la aprueba cuando hace falta.", "See the projects": "Ver los proyectos", "Get in touch": "Contactar", "350+ hours a month": "Más de 350 horas al mes", "of manual work removed by automations at Mercedes-Benz Financial Services.": "de trabajo manual eliminadas con automatizaciones en Mercedes-Benz Financial Services.", "Yes, I basically automated my own full-time job as a financial analyst, and now automating is my job.": "Sí, básicamente automaticé mi propio trabajo a jornada completa como analista financiera, y ahora automatizar es mi trabajo.", "Is there a process your team does every month, always in the same way?": "¿Hay algún proceso que tu equipo haga cada mes, siempre de la misma forma?", "Then it can probably run by itself. I find those processes and look for the best way to improve or automate them. People always make the final decision when needed.": "Entonces probablemente pueda funcionar solo. Encuentro esos procesos y busco la mejor forma de mejorarlos o automatizarlos. Las personas siempre toman la decisión final cuando hace falta.", "Tell me about your processes": "Cuéntame tus procesos", "A process can be automated if:": "Un proceso se puede automatizar si:", "The steps are mostly the same every day, week or month": "Los pasos son casi siempre los mismos cada día, semana o mes", "People download files from a system and then work on them in Excel": "Se descargan archivos de un sistema y luego se trabajan en Excel", "Someone cross-checks, filters or adjusts figures between files, always following the same logic": "Alguien cruza, filtra o ajusta cifras entre archivos, siempre con la misma lógica", "What your team gets:": "Qué gana tu equipo:", "Hours back every month, when time matters most": "Horas recuperadas cada mes, justo cuando más importa el tiempo", "Every decision made by the flow or by AI is recorded and can be reverted": "Cada decisión del flujo o de la IA queda registrada y se puede revertir", "Exceptions are reviewed by a person when needed": "Las excepciones las revisa una persona cuando hace falta", "Fewer human errors": "Menos errores humanos", "Built for real month-end work. Each project has a short video of the before and after, from complex projects that involve several systems and analysis to simple day-to-day tasks.": "Hechos para el trabajo real de cierre de mes. Cada proyecto tiene un vídeo corto del antes y el después, desde proyectos complejos con varios sistemas y análisis hasta tareas sencillas del día a día.", "Interest and liquidity risk letters": "Cartas de riesgo de tipo de interés y liquidez", "In production": "En producción", "160 hours": "160 horas", "saved every month": "ahorradas cada mes", "Every month the team prepares a risk letter for each of the 40 companies in the group. Analysts opened dozens of spreadsheets, cross-checked numbers between files and wrote each letter with the results: 8 people, 2 weeks a month, working towards a deadline.": "Cada mes el equipo prepara una carta de riesgo para cada una de las 40 empresas del grupo. Los analistas abrían decenas de hojas de cálculo, cruzaban cifras entre archivos y redactaban cada carta con los resultados: 8 personas, 2 semanas al mes, con una fecha límite.", "Read every file": "Lee todos los archivos", "Check the analysts' rules": "Aplica las reglas de los analistas", "Look into what's off, propose a fix": "Investiga lo que no cuadra y propone una solución", "Write the letter": "Redacta la carta", "Attach it to the email": "La adjunta al email", "Analyst": "Analista", "Review and click Send": "Revisa y pulsa Enviar", "a person decides": "decide una persona", "AI drafts, a person reviews": "la IA redacta, una persona revisa", "The workflow reads the numbers from every Excel file involved, for every company.": "El flujo lee las cifras de todos los Excel implicados, para cada empresa.", "It checks them against the same rules the analysts work with.": "Las comprueba con las mismas reglas que usan los analistas.", "If anything is off, AI looks into the related files and emails for more information and sends a proposed solution to the analyst.": "Si algo no cuadra, la IA busca más información en los archivos y emails relacionados y envía una propuesta de solución al analista.", "AI writes the letter, which is converted to PDF and attached to the final email for the stakeholders.": "La IA redacta la carta, que se convierte a PDF y se adjunta al email final para los destinatarios.", "A person reviews that everything is correct and clicks Send.": "Una persona revisa que todo esté correcto y pulsa Enviar.", "Month-end controls dashboard": "Dashboard de controles de cierre de mes", "40 hours": "40 horas", "saved every month, 1 hour per entity": "ahorradas cada mes, 1 hora por entidad", "Four validation checks had to be run by hand for 40 entities every month, under deadline pressure.": "Cada mes había que hacer a mano cuatro controles de validación para 40 entidades, con la presión de la fecha límite.", "Folders": "Carpetas", "Monthly reports, 40 entities": "Informes mensuales, 40 entidades", "Combine and tag by entity": "Une y etiqueta por entidad", "Run 4 checks": "Ejecuta 4 controles", "Dashboard": "Dashboard", "Review exceptions by entity": "Revisión de excepciones por entidad", "Reports from every entity are combined automatically on one dashboard.": "Los informes de todas las entidades se unen automáticamente en un solo dashboard.", "The four checks run for every entity at once. If something is off, the dashboard shows it.": "Los cuatro controles se ejecutan a la vez para todas las entidades. Si algo no cuadra, el dashboard lo muestra.", "A filter for every entity lets you review the exceptions one by one.": "Un filtro por entidad permite revisar las excepciones una a una.", "SAP invoice processing and approvals": "Gestión y aprobación de facturas en SAP", "16 hours": "16 horas", "Every week, open invoices had to be exported from SAP, sorted by hand, compared with last week's list and chased with individual emails to each person responsible.": "Cada semana había que exportar de SAP las facturas pendientes, clasificarlas a mano, compararlas con la lista de la semana anterior y reclamarlas con emails individuales a cada responsable.", "Export weekly invoice report": "Exporta el informe semanal de facturas", "Business rules": "Reglas de negocio", "Sort into 6 categories": "Clasifica en 6 categorías", "Compare with last run": "Compara con la ejecución anterior", "Email drafts per owner": "Borradores de email por responsable", "Track follow-ups": "Seguimiento de reclamaciones", "A desktop flow opens SAP, runs the report and downloads the weekly export.": "Un flujo de escritorio abre SAP, ejecuta el informe y descarga la exportación semanal.", "Filters are applied to the downloaded Excel file, following the team's business rules.": "Se aplican filtros al Excel descargado, siguiendo las reglas de negocio del equipo.", "If an invoice was already sent, the flow detects it and sends a follow-up instead of a new email.": "Si una factura ya se había enviado, el flujo lo detecta y manda un recordatorio en lugar de un email nuevo.", "Status tracking shows which invoices are pending, chased or confirmed.": "El seguimiento muestra qué facturas están pendientes, reclamadas o confirmadas.", "Let's talk": "Hablemos", "I'm looking for roles in financial analysis where I can apply process improvement and automation, based in Madrid. I'm happy to run any of these flows live in an interview.": "Busco puestos de análisis financiero en Madrid donde pueda aplicar mejora de procesos y automatización. Puedo enseñar cualquiera de estos flujos en directo en una entrevista.", "Email me": "Escríbeme", "Demos use fictional data.": "Las demos usan datos ficticios."};
+  const ATTR = {"Main": "Principal", "Language": "Idioma", "Tools": "Herramientas", "Monthly risk letters: the problem and the solution, in 1 minute": "Cartas de riesgo mensuales: el problema y la solución, en minuto y medio", "Flow: risk letters": "Flujo: cartas de riesgo", "Month-end checks: the problem and the solution, in 1 minute": "Controles de cierre de mes: el problema y la solución, en 1 minuto", "Flow: controls dashboard": "Flujo: dashboard de controles", "Invoice follow-up: the problem and the solution, in 1 minute": "Seguimiento de facturas: el problema y la solución, en 1 minuto", "Flow: SAP invoices": "Flujo: facturas SAP"};
+  const ES_VIDEOS = true;    /* set to true once the Spanish videos (ilg_es.mp4 …) are uploaded */
+  const META = { en: { title: document.title }, es: { title: "Andrea Alarcón – Automatización financiera" } };
+  const texts = [];
+  const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: n =>
+    n.parentElement.closest("script,style") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  for (let n; (n = walk.nextNode());) { const k = n.nodeValue.trim(); if (ES[k]) texts.push([n, n.nodeValue, n.nodeValue.replace(k, ES[k])]); }
+  const attrs = [...document.querySelectorAll("[aria-label]")].filter(e => ATTR[e.getAttribute("aria-label")])
+    .map(e => [e, e.getAttribute("aria-label"), ATTR[e.getAttribute("aria-label")]]);
+  const videos = [...document.querySelectorAll("video[data-v]")];
+  function set(lang) {
+    const es = lang === "es";
+    texts.forEach(([n, en, sp]) => n.nodeValue = es ? sp : en);
+    attrs.forEach(([e, en, sp]) => e.setAttribute("aria-label", es ? sp : en));
+    document.documentElement.lang = lang; document.title = META[lang].title;
+    if (ES_VIDEOS) videos.forEach(v => {
+      const name = v.dataset.v + (es ? "_es" : ""), src = name + ".mp4?v=3";
+      if (!v.getAttribute("src").startsWith(name + ".")) { v.pause(); v.setAttribute("src", src); v.setAttribute("poster", name + ".jpg?v=3"); v.load(); }
+    });
+    document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    try { localStorage.setItem("lang", lang); } catch (e) {}
+  }
+  document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => {
+    set(b.dataset.lang);
+    try { const u = new URL(location.href); u.searchParams.set("lang", b.dataset.lang); history.replaceState(null, "", u); } catch (e) {}
+  }));
+  let start = new URLSearchParams(location.search).get("lang");
+  if (!start) { try { start = localStorage.getItem("lang"); } catch (e) {} }
+  if (start === "es") set("es");
 })();
 </script>
 </body>

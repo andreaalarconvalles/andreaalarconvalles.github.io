@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Andrea Alarcón – Finance automation</title>
+<meta name="description" content="Andrea Alarcón builds finance automations with Power Automate, Office Scripts, AI Builder and Power BI: month-end checks, SAP invoice processing, risk letters and reporting.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3F5F2;      /* ledger paper */
+    --grid: #DCE3DC;       /* ledger grid lines */
+    --ink: #23262B;        /* graphite */
+    --muted: #5B6168;
+    --pen: #1F3FA6;        /* fountain-pen blue: actions, links, flows */
+    --pass: #2F7D4F;       /* tick: done / passed */
+    --wait: #A8670F;       /* waiting for a person */
+    --flag: #B3261E;       /* exception */
+    --panel: #FFFFFF;
+    --sans: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+    --serif: "Source Serif 4", Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.0625rem/1.65 var(--serif); }
+  a { color: var(--pen); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--pen); outline-offset: 3px; border-radius: 4px; }
+  h1, h2, h3, .sans { font-family: var(--sans); }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- top bar ---------- */
+  .top { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; font-family: var(--sans); font-size: .95rem; }
+  .top strong { font-weight: 700; letter-spacing: -.01em; }
+  .top nav a { margin-left: 22px; color: var(--ink); text-decoration: none; }
+  .top nav a:hover { color: var(--pen); text-decoration: underline; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 56px 0 88px; max-width: 900px; }
+  .hero h1 { font-size: clamp(2.2rem, 5vw, 3.9rem); line-height: 1.05; letter-spacing: -.035em; font-weight: 800; margin: 0 0 22px; }
+  .hero p.lede { font-size: 1.22rem; line-height: 1.55; max-width: 34em; margin: 0 0 30px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 34px; }
+  .btn { font: 600 1rem var(--sans); padding: 13px 20px; border-radius: 8px; text-decoration: none; border: 2px solid var(--pen); }
+  .btn.primary { background: var(--pen); color: #fff; }
+  .btn.ghost { color: var(--pen); background: transparent; }
+  .btn:hover { filter: brightness(1.08); }
+  .proof { font-family: var(--sans); color: var(--muted); font-size: .98rem; margin: 0; }
+  .proof b { color: var(--ink); font-size: 1.35rem; letter-spacing: -.02em; }
+
+  /* ---------- is this your company? ---------- */
+  .fit { background: var(--pen); color: #fff; padding: 64px 0 66px; }
+  .fit .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: start; }
+  .fit h2 { font-size: clamp(2rem, 3.6vw, 2.9rem); line-height: 1.08; letter-spacing: -.03em; margin: 0 0 18px; }
+  .fit p { font-size: 1.15rem; margin: 0 0 26px; max-width: 32em; color: #E3E9FF; }
+  .fit ul { list-style: none; margin: 0 0 26px; padding: 0; font-family: var(--sans); }
+  .fit li { display: flex; gap: 12px; align-items: baseline; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,.22); font-size: 1.06rem; }
+  .fit li b { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; background: #fff; color: var(--pen); display: inline-grid; place-items: center; font-size: .85rem; transform: translateY(5px); }
+  .fit h3 { font-size: 1.1rem; margin: 6px 0 12px; }
+  .fit .gets li { border-bottom-color: rgba(255,255,255,.22); }
+  .fit .btn { border-color: #fff; }
+  .fit .btn.light { background: #fff; color: var(--pen); }
+  .fit a:focus-visible { outline-color: #fff; }
+  @media (max-width: 920px) { .fit .wrap { grid-template-columns: 1fr; gap: 26px; } }
+
+  /* ---------- projects ---------- */
+  .projects h2.section { font-size: 1.7rem; letter-spacing: -.02em; margin: 70px 0 6px; }
+  .projects > .wrap > p.intro { color: var(--muted); max-width: 44em; margin: 0 0 8px; }
+  .project > div, .contact > * { min-width: 0; }
+  .project { display: grid; grid-template-columns: 330px 1fr; gap: 48px; padding: 46px 0 52px; border-top: 1px solid #C9D2C9; }
+  .project:first-of-type { border-top: 2px solid var(--ink); }
+  .project h3 { font-size: 1.5rem; line-height: 1.15; letter-spacing: -.02em; margin: 0 0 10px; }
+  .where { font-family: var(--sans); color: var(--muted); font-size: .92rem; margin: 0 0 22px; }
+  .status { display: inline-block; font-weight: 600; color: var(--pass); }
+  .impact { font-family: var(--sans); margin: 0 0 22px; }
+  .impact b { display: block; font-size: 2.6rem; line-height: 1; letter-spacing: -.04em; font-weight: 800; color: var(--ink); }
+  .impact span { color: var(--muted); font-size: .95rem; }
+  .stack { font-family: var(--sans); font-size: .9rem; margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+  .stack li { border: 1px solid #C9D2C9; border-radius: 5px; padding: 2px 8px; background: #fff; }
+  .vid { margin: 0 0 26px; }
+  .vid video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; border: 1px solid #C9D2C9; background: var(--paper); }
+  .problem { font-size: 1.08rem; margin: 0 0 24px; max-width: 46em; }
+
+  /* animated flow diagram */
+  .flow { list-style: none; margin: 0 0 26px; padding: 16px 12px; display: flex; align-items: stretch; gap: 0;
+          background: #fff; border: 1px solid #C9D2C9; border-radius: 12px; overflow-x: auto; }
+  .flow li { display: contents; }
+  .node { flex: 1 1 0; min-width: 84px; border: 1.5px solid #B9C2B9; border-radius: 9px; padding: 9px 10px; font-family: var(--sans);
+          background: var(--paper); transition: border-color .25s, background .25s, box-shadow .25s; }
+  .node .sys { display: block; font-size: .74rem; color: var(--muted); margin-bottom: 3px; }
+  .node .act { display: block; font-size: .88rem; font-weight: 600; line-height: 1.25; }
+  .node.person { border-style: dashed; border-color: var(--wait); }
+  .node.ai { border-color: #6B4FBB; }
+  .node.lit { border-color: var(--pen); background: #EAF0FF; box-shadow: 0 0 0 3px rgba(31,63,166,.12); }
+  .node.person.lit { border-color: var(--wait); background: #FBF2E2; box-shadow: 0 0 0 3px rgba(168,103,15,.15); }
+  .wire { flex: 0 0 24px; position: relative; align-self: center; height: 2px; background: #B9C2B9; }
+  .wire::after { content: ""; position: absolute; right: -1px; top: -4px; border: 5px solid transparent; border-left-color: #B9C2B9; border-right: 0; }
+  .doc { position: absolute; left: 0; top: -6px; width: 11px; height: 14px; background: var(--pen); border-radius: 2px; opacity: 0; }
+  .legend { font-family: var(--sans); font-size: .82rem; color: var(--muted); margin: -16px 0 22px; }
+  .legend i { display: inline-block; width: 14px; height: 10px; border: 1.5px dashed var(--wait); border-radius: 3px; margin: 0 4px -1px 0; }
+  .legend i.ai { border: 1.5px solid #6B4FBB; margin-left: 14px; }
+  .steps { margin: 0; padding-left: 1.3em; max-width: 48em; }
+  .steps li { margin-bottom: 7px; padding-left: 4px; }
+  .steps li::marker { font-family: var(--sans); font-weight: 700; color: var(--pen); }
+  .note { font-size: .95rem; color: var(--muted); margin: 18px 0 0; max-width: 48em; }
+
+  /* ---------- contact ---------- */
+  .contact { border-top: 2px solid var(--ink); margin-top: 0; padding: 46px 0 70px; display: grid; grid-template-columns: 330px 1fr; gap: 48px; }
+  .contact h2 { font-size: 1.7rem; letter-spacing: -.02em; margin: 0; }
+  .contact p { margin: 0 0 18px; max-width: 40em; }
+  .fine { font-family: var(--sans); font-size: .85rem; color: var(--muted); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 920px) {
+    .hero { padding-top: 20px; }
+    .project, .contact { grid-template-columns: 1fr; gap: 22px; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 18px; }
+    .top nav a { margin-left: 14px; }
+    .top nav a.hide-s { display: none; }
+    .flow { flex-direction: column; overflow: visible; }
+    .wire { flex: 0 0 24px; width: 2px; height: auto; align-self: center; }
+    .wire::after { right: -4px; top: auto; bottom: -1px; border: 5px solid transparent; border-top-color: #B9C2B9; border-bottom: 0; }
+    .doc { left: -5px; top: 0; }
+    .node { min-width: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <strong>Andrea Alarcón</strong>
+    <nav aria-label="Main">
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div>
+      <h1 id="hero-title">I'm a financial analyst who helps teams automate their tasks and win back crucial time at month&#8209;end.</h1>
+      <p class="lede">I turn repetitive manual tasks into workflows that run on their own. When something doesn't match, AI steps in to suggest a solution, and a person reviews and approves it when needed.</p>
+      <div class="actions">
+        <a class="btn primary" href="#projects">See the projects</a>
+        <a class="btn ghost" href="mailto:alarconvalles.andrea@gmail.com">Get in touch</a>
+      </div>
+      <p class="proof"><b>350+ hours a month</b> of manual work removed by automations at Mercedes-Benz Financial Services.</p>
+    </div>
+
+  </section>
+</div>
+
+<section class="fit" aria-labelledby="fit-title">
+  <div class="wrap">
+    <div>
+      <h2 id="fit-title">Is there a process your team does every month, always in the same way?</h2>
+      <p>Then it can probably run by itself. I find those processes and look for the best way to improve or automate them. People always make the final decision when needed.</p>
+      <a class="btn light" href="mailto:alarconvalles.andrea@gmail.com">Tell me about your processes</a>
+    </div>
+    <div>
+      <h3>A process can be automated if:</h3>
+      <ul>
+        <li><b aria-hidden="true">✓</b>The steps are mostly the same every day, week or month</li>
+        <li><b aria-hidden="true">✓</b>People download files from a system and then work on them in Excel</li>
+        <li><b aria-hidden="true">✓</b>Someone cross-checks, filters or adjusts figures between files, always following the same logic</li>
+      </ul>
+      <h3>What your team gets:</h3>
+      <ul class="gets">
+        <li><b aria-hidden="true">✓</b>Hours back every month, when time matters most</li>
+        <li><b aria-hidden="true">✓</b>Every decision made by the flow or by AI is recorded and can be reverted</li>
+        <li><b aria-hidden="true">✓</b>Exceptions are reviewed by a person when needed</li>
+        <li><b aria-hidden="true">✓</b>Fewer human errors</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="projects" id="projects" aria-labelledby="projects-title">
+  <div class="wrap">
+    <h2 class="section" id="projects-title">Projects</h2>
+    <p class="intro">Built for real month-end work. Each project has a short video of the before and after, from complex projects that involve several systems and analysis to simple day-to-day tasks.</p>
+
+    <!-- Project 1 -->
+    <article class="project" aria-labelledby="p1">
+      <div>
+        <h3 id="p1">Interest and liquidity risk letters</h3>
+        <p class="where">Mercedes-Benz Financial Services<br><span class="status">In production</span></p>
+        <p class="impact"><b>160 hours</b><span>saved every month</span></p>
+        <ul class="stack" aria-label="Tools">
+          <li>Power Automate</li><li>Office Scripts</li><li>AI Builder</li><li>Teams</li><li>SharePoint</li><li>Outlook</li>
+        </ul>
+      </div>
+      <div>
+        <figure class="vid"><video src="videos/ilg.mp4" poster="videos/ilg.jpg" controls playsinline preload="none" aria-label="Monthly risk letters: the problem and the solution, in 1 minute"></video></figure>
+        <p class="problem">Every month the team prepares a risk letter for each of the 40 companies in the group. Analysts opened dozens of spreadsheets, cross-checked numbers between files and wrote each letter with the results: 8 people, 2 weeks a month, working towards a deadline.</p>
+        <ol class="flow" aria-label="Flow: risk letters">
+          <li><span class="node"><span class="sys">Excel</span><span class="act">Read every file</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node"><span class="sys">Office Script</span><span class="act">Check the analysts' rules</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node ai"><span class="sys">AI Builder</span><span class="act">Look into what's off, propose a fix</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node ai"><span class="sys">AI Builder</span><span class="act">Write the letter</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node"><span class="sys">PDF + Outlook</span><span class="act">Attach it to the email</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node person"><span class="sys">Analyst</span><span class="act">Review and click Send</span></span></li>
+        </ol>
+        <p class="legend"><i></i>a person decides <i class="ai"></i>AI drafts, a person reviews</p>
+        <ol class="steps">
+          <li>The workflow reads the numbers from every Excel file involved, for every company.</li>
+          <li>It checks them against the same rules the analysts work with.</li>
+          <li>If anything is off, AI looks into the related files and emails for more information and sends a proposed solution to the analyst.</li>
+          <li>AI writes the letter, which is converted to PDF and attached to the final email for the stakeholders.</li>
+          <li>A person reviews that everything is correct and clicks Send.</li>
+        </ol>
+      </div>
+    </article>
+
+    <!-- Project 2 -->
+    <article class="project" aria-labelledby="p2">
+      <div>
+        <h3 id="p2">SAP invoice processing and approvals</h3>
+        <p class="where">Mercedes-Benz Financial Services<br><span class="status">In production</span></p>
+        <p class="impact"><b>16 hours</b><span>saved every month</span></p>
+        <ul class="stack" aria-label="Tools">
+          <li>Power Automate Desktop</li><li>SAP GUI</li><li>Excel</li><li>Outlook</li>
+        </ul>
+      </div>
+      <div>
+        <figure class="vid"><video src="videos/sap.mp4" poster="videos/sap.jpg" controls playsinline preload="none" aria-label="Invoice follow-up: the problem and the solution, in 1 minute"></video></figure>
+        <p class="problem">Every week, open invoices had to be exported from SAP, sorted by hand, compared with last week's list and chased with individual emails to each person responsible.</p>
+        <ol class="flow" aria-label="Flow: SAP invoices">
+          <li><span class="node"><span class="sys">SAP GUI</span><span class="act">Export weekly invoice report</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node"><span class="sys">Business rules</span><span class="act">Sort into 6 categories</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node"><span class="sys">Excel</span><span class="act">Compare with last run</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node"><span class="sys">Outlook</span><span class="act">Email drafts per owner</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node"><span class="sys">Excel</span><span class="act">Track follow-ups</span></span></li>
+        </ol>
+        <ol class="steps">
+          <li>A desktop flow opens SAP, runs the report and downloads the weekly export.</li>
+          <li>Filters are applied to the downloaded Excel file, following the team's business rules.</li>
+          <li>If an invoice was already sent, the flow detects it and sends a follow-up instead of a new email.</li>
+          <li>Status tracking shows which invoices are pending, chased or confirmed.</li>
+        </ol>
+      </div>
+    </article>
+
+    <!-- Project 3 -->
+    <article class="project" aria-labelledby="p3">
+      <div>
+        <h3 id="p3">Month-end controls dashboard</h3>
+        <p class="where">Mercedes-Benz Financial Services<br><span class="status">In production</span></p>
+        <p class="impact"><b>40 hours</b><span>saved every month, 1 hour per entity</span></p>
+        <ul class="stack" aria-label="Tools">
+          <li>Power BI</li><li>Power Query</li><li>Excel</li>
+        </ul>
+      </div>
+      <div>
+        <figure class="vid"><video src="videos/pbi.mp4" poster="videos/pbi.jpg" controls playsinline preload="none" aria-label="Month-end checks: the problem and the solution, in 50 seconds"></video></figure>
+        <p class="problem">Four validation checks had to be run by hand for 40 entities every month, under deadline pressure.</p>
+        <ol class="flow" aria-label="Flow: controls dashboard">
+          <li><span class="node"><span class="sys">Folders</span><span class="act">Monthly reports, 40 entities</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node"><span class="sys">Power Query</span><span class="act">Combine and tag by entity</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node"><span class="sys">Power BI</span><span class="act">Run 4 checks</span></span></li>
+          <li><span class="wire"><span class="doc"></span></span></li>
+          <li><span class="node person"><span class="sys">Dashboard</span><span class="act">Review exceptions by entity</span></span></li>
+        </ol>
+        <ol class="steps">
+          <li>Reports from every entity are combined automatically on one dashboard.</li>
+          <li>The four checks run for every entity at once. If something is off, the dashboard shows it.</li>
+          <li>A filter for every entity lets you review the exceptions one by one.</li>
+        </ol>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">Let's talk</h2>
+    <div>
+      <p>I'm looking for roles in financial analysis where I can apply process improvement and automation, based in Madrid. I'm happy to run any of these flows live in an interview.</p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:alarconvalles.andrea@gmail.com">Email me</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/andreaalarconvalles/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn ghost" href="https://github.com/andreaalarconvalles" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <p class="fine">Demos use fictional data.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+
+  /* ---------- project diagrams: a document travels node to node ---------- */
+  const flows = document.querySelectorAll(".flow");
+  async function animateFlow(flow) {
+    const nodes = [...flow.querySelectorAll(".node")];
+    const wires = [...flow.querySelectorAll(".wire")];
+    const vertical = getComputedStyle(flow).flexDirection === "column";
+    while (flow.dataset.visible === "1") {
+      for (let i = 0; i < nodes.length; i++) {
+        if (flow.dataset.visible !== "1") break;
+        nodes[i].classList.add("lit");
+        await wait(nodes[i].classList.contains("person") ? 1100 : 650);
+        nodes[i].classList.remove("lit");
+        const w = wires[i];
+        if (w) {
+          const doc = w.querySelector(".doc");
+          const len = vertical ? w.offsetHeight : w.offsetWidth;
+          const from = vertical ? "translateY(0)" : "translateX(0)";
+          const to = vertical ? `translateY(${len - 14}px)` : `translateX(${len - 11}px)`;
+          await doc.animate([{ transform: from, opacity: 1 }, { transform: to, opacity: 1 }],
+                            { duration: 420, easing: "ease-in-out" }).finished;
+        }
+      }
+      await wait(900);
+    }
+  }
+  if (!reduce && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      const f = e.target;
+      if (e.isIntersecting && f.dataset.visible !== "1") { f.dataset.visible = "1"; animateFlow(f); }
+      else if (!e.isIntersecting) { f.dataset.visible = "0"; }
+    }), { threshold: 0.4 });
+    flows.forEach(f => io.observe(f));
+  }
+})();
+</script>
+</body>
+</html>
